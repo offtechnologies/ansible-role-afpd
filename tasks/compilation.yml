@@ -1,0 +1,49 @@
+---
+- name: Netatalk | Check if afpd is installed
+  stat:
+    path: /usr/local/sbin/afpd
+  register: afpd_check_result
+
+
+- name: Netatalk | Download Source
+  get_url:
+    url="{{ netatalk_url }}"
+    dest="{{ netatalk_tar }}"
+  register: source_downloaded
+  when: afpd_check_result.stat.exists == False
+
+- name: Netatalk | Uncompress
+  unarchive:
+    src={{ netatalk_tar }}
+    dest=/tmp
+    copy=no
+    creates="{{ netatalk_sources }}"
+  when: source_downloaded
+  register: uncompressed
+
+- name: Netatalk | Configure
+  become: true
+  command: "./configure \
+        --with-init-style=debian-systemd \
+        --without-libevent \
+        --without-tdb \
+        --with-cracklib \
+        --enable-krbV-uam \
+        --with-pam-confdir=/etc/pam.d \
+        --with-dbus-daemon=/usr/bin/dbus-daemon \
+        --with-dbus-sysconf-dir=/etc/dbus-1/system.d \
+        --with-tracker-pkgconfig-version=1.0"
+  args:
+    chdir: "{{ netatalk_sources }}"
+  when: uncompressed and afpd_check_result.stat.exists == False
+  register: configured
+
+- name: Netatalk | Make & Install
+  become: true
+  make:
+    chdir: "{{ netatalk_sources }}"
+    target: install
+    params:
+      NUM_THREADS: 7
+  when: configured and afpd_check_result.stat.exists == False
+  register: installed

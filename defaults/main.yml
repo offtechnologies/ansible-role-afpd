@@ -1,0 +1,6 @@
+---
+# defaults file for ansible-afpd-source
+netatalk_version: "3.1.10"
+netatalk_url: "http://prdownloads.sourceforge.net/netatalk/netatalk-{{ netatalk_version }}.tar.bz2"
+netatalk_tar: "/tmp/netatalk-{{ netatalk_version }}.tar.bz2"
+netatalk_sources: "/tmp/netatalk-{{ netatalk_version }}"

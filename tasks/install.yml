@@ -1,0 +1,11 @@
+---
+
+- name: Netatalk | Update Config
+  template: src=afp.conf.j2 dest=/usr/local/etc/afp.conf owner=root group=root mode=0644 backup=yes
+
+- name: Netatalk | Enable Services
+  become: yes
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+      - avahi-daemon
+      - netatalk
