@@ -25,8 +25,19 @@ install:
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
-  # syntax check
+  # first test - syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
+  # second test - role check
+  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+
+  # third test - idempotent?
+  - >
+  ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+  | grep -q 'changed=0.*failed=0'
+  && (echo 'Idempotence test: pass' && exit 0)
+  || (echo 'Idempotence test: fail' && exit 1)
+
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

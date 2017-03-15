@@ -1,1 +1,3 @@
 setup.retry
+.kitchen/
+.kitchen.local.yml
