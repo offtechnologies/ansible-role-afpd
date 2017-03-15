@@ -3,8 +3,8 @@ language: python
 python: "2.7"
 
 # Use the new container infrastructure
-name: Ubuntu
-dist: yaketty
+# name: Ubuntu
+dist: xenial
 sudo: required
 
 before_install:

@@ -3,7 +3,7 @@
 
 An Ansible Role that: .configure and make and make install afpd on Ubuntu 16.10
 <br>
-More info on [[Netatalk] (http://netatalk.sourceforge.net/wiki/index.php/Install_Netatalk_3.1.10_on_Ubuntu_16.04_Xenial)] wiki.
+More info on [Netatalk](http://netatalk.sourceforge.net/wiki/index.php/Install_Netatalk_3.1.10_on_Ubuntu_16.04_Xenial) wiki.
 
 
 
