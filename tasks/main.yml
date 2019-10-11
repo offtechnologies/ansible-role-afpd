@@ -1,5 +1,12 @@
 ---
 # tasks file for ansible-afpd-source
+- name: Netatalk | Check if afpd is installed
+  stat:
+    path: /usr/local/sbin/afpd
+  register: afpd_check_result
+
 - include: dependencies.yml
+  when: afpd_check_result.stat.exists == False
 - include: compilation.yml
+  when: afpd_check_result.stat.exists == False
 - include: install.yml
